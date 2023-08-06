@@ -25,14 +25,14 @@ public class EventOffset {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
 
-    private int offset;
+    private int lastOffset;
 
     public EventOffset(EventType eventType) {
         this.eventType = eventType;
-        this.offset = 0;
+        this.lastOffset = 0;
     }
 
     public void updateOffset(int offset) {
-        this.offset = offset;
+        this.lastOffset = offset;
     }
 }

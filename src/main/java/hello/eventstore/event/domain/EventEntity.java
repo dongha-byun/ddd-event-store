@@ -30,9 +30,9 @@ public class EventEntity {
     @Lob
     private String payload;
 
-    public EventEntity(EventType eventType, LocalDateTime timestamp, String payload) {
+    public EventEntity(EventType eventType, String payload) {
         this.eventType = eventType;
-        this.timestamp = timestamp;
+        this.timestamp = LocalDateTime.now();
         this.payload = payload;
     }
 }

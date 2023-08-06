@@ -7,7 +7,6 @@ import hello.eventstore.event.domain.EventStore;
 import hello.eventstore.event.domain.EventType;
 import hello.eventstore.order.domain.OrderEventDispatcher;
 import hello.eventstore.order.event.OrderCanceledEvent;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,6 @@ public class EventStoreOrderEventDispatcher implements OrderEventDispatcher {
             String payload = objectMapper.writeValueAsString(event);
             EventEntity eventEntity = new EventEntity(
                     EventType.ORDER_CANCELED,
-                    LocalDateTime.now(),
                     payload
             );
             eventStore.save(eventEntity);

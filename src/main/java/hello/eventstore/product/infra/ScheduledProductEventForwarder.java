@@ -13,10 +13,10 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,26 +37,33 @@ public class ScheduledProductEventForwarder {
         long start = System.currentTimeMillis();
 
         // 마지막 offset 조회
-        EventOffset eventOffset = eventOffsetStore.findByEventType(EventType.ORDER_CANCELED);
-        if(eventOffset == null) {
-            eventOffset = new EventOffset(EventType.ORDER_CANCELED);
-            eventOffsetStore.save(eventOffset);
-        }
-        int offset = eventOffset.getOffset();
+        EventOffset eventOffset = getLastOffset(EventType.ORDER_CANCELED);
+        int lastOffset = eventOffset.getLastOffset();
 
         // 이벤트 목록 조회
-        List<EventEntity> events = getEvents(offset);
+        List<EventEntity> events = getEvents(lastOffset);
 
         // 이벤트 전달
         // 이벤트 타입에 맞게 이벤트 객체로 전달
         int successCount = send(events);
 
         // offset 변경
-        eventOffset.updateOffset(offset + successCount);
+        eventOffsetStore.updateLastOffset(EventType.ORDER_CANCELED, lastOffset + successCount);
 
         long end = System.currentTimeMillis();
         long time = end - start;
         log.info("scheduled method end ===> {}ms", time);
+    }
+
+    public EventOffset getLastOffset(EventType eventType) {
+        EventOffset eventOffset = new EventOffset(eventType);
+        try{
+            eventOffset = eventOffsetStore.findByEventType(eventType);
+        } catch(EmptyResultDataAccessException e) {
+            eventOffsetStore.save(eventOffset);
+        }
+
+        return eventOffset;
     }
 
     // 조회한 offset 만큼 이벤트 목록 조회
@@ -91,6 +98,6 @@ public class ScheduledProductEventForwarder {
 
     private void doProcess(Long productId, int quantity) {
         Product product = productRepository.findById(productId);
-        product.decreaseQuantity(quantity);
+        product.increaseQuantity(quantity);
     }
 }
