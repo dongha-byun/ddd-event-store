@@ -43,7 +43,7 @@ public class OrderService {
     }
 
     private void sendOrderCancelEvent(OrderItem orderItem) {
-        orderEventDispatcher.handle(
+        orderEventDispatcher.send(
                 new OrderCanceledEvent(
                         orderItem.getProductId(),
                         orderItem.getQuantity()

@@ -18,7 +18,7 @@ public class EventStoreOrderEventDispatcher implements OrderEventDispatcher {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void handle(OrderCanceledEvent event) {
+    public void send(OrderCanceledEvent event) {
         try {
             String payload = objectMapper.writeValueAsString(event);
             EventEntity eventEntity = new EventEntity(

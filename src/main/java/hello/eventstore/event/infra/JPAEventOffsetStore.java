@@ -22,9 +22,10 @@ public class JPAEventOffsetStore implements EventOffsetStore {
     @Override
     @Transactional(readOnly = true)
     public EventOffset findByEventType(EventType type) {
-        return entityManager.createQuery(
-                        "select o from EventOffset o "
-                                + "where o.eventType = :eventType", EventOffset.class
+        return entityManager
+                .createQuery(
+                        "select o from EventOffset o " +
+                                "where o.eventType = :eventType", EventOffset.class
                 ).setParameter("eventType", type)
                 .getSingleResult();
     }

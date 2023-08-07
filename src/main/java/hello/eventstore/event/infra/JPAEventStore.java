@@ -2,7 +2,6 @@ package hello.eventstore.event.infra;
 
 import hello.eventstore.event.domain.EventEntity;
 import hello.eventstore.event.domain.EventStore;
-import hello.eventstore.event.domain.EventType;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

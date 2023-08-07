@@ -1,9 +1,10 @@
 package hello.eventstore.product.domain;
 
-import hello.eventstore.event.domain.EventEntity;
-import java.util.List;
+import hello.eventstore.product.event.OrderCanceledEvent;
 
 public interface ProductEventForwarder {
 
-    List<EventEntity> getEvents(int offset, int limit);
+    void getAndDoProcess();
+
+    void doProcess(OrderCanceledEvent event);
 }
