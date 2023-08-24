@@ -1,13 +1,10 @@
 package hello.eventstore.order.application;
 
-import hello.eventstore.event.domain.EventEntity;
-import hello.eventstore.event.domain.EventType;
 import hello.eventstore.order.domain.Order;
 import hello.eventstore.order.domain.OrderEventDispatcher;
 import hello.eventstore.order.domain.OrderItem;
 import hello.eventstore.order.domain.OrderRepository;
 import hello.eventstore.order.event.OrderCanceledEvent;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

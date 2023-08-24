@@ -20,11 +20,4 @@ public class OrderItem {
     public int getQuantity() {
         return quantity;
     }
-
-    public String toCancelEventPayload() {
-        return "{" +
-                "\"productId\":" + productId + ", " +
-                "\"quantity\":" + quantity +
-                "}";
-    }
 }
